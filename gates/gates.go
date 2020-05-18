@@ -1,6 +1,9 @@
 package gates
 
-import "sync"
+import (
+	"fmt"
+	"sync"
+)
 
 // Gate defines the interface a gate should support
 type Gate interface {
@@ -20,11 +23,21 @@ func (b *board) run(g Gate) {
 		for b.running {
 			g.Compute()
 		}
+		fmt.Println("Board stopped")
 	}()
 }
 
 func (b *board) Stop() {
+	b.running = false
+	for _, gate := range b.gates {
+		gate.Stop()
+	}
+}
 
+func (b *board) addGate(g Gate) {
+	b.mu.Lock()
+	b.gates = append(b.gates, g)
+	b.mu.Unlock()
 }
 
 // AND creates and AND gate
@@ -35,6 +48,7 @@ func (b *board) AND() ANDGate {
 		Out:  make(chan int),
 	}
 	b.run(&gate)
+	b.addGate(&gate)
 	return gate
 }
 
@@ -45,6 +59,7 @@ func (b *board) NOT() NOTGate {
 		Out:  make(chan int),
 	}
 	b.run(&gate)
+	b.addGate(&gate)
 	return gate
 }
 

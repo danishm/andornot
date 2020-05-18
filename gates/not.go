@@ -10,8 +10,9 @@ func (g *NOTGate) Compute() {
 	x := <-g.Pin1
 	if x < 1 {
 		g.Out <- 1
+	} else {
+		g.Out <- 0
 	}
-	g.Out <- 0
 }
 
 func (g *NOTGate) Stop() {

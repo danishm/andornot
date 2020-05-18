@@ -12,10 +12,12 @@ func (g *ANDGate) Compute() {
 	x, y := <-g.Pin1, <-g.Pin2
 	if x >= 1 && y >= 1 {
 		g.Out <- 1
+	} else {
+		g.Out <- 0
 	}
-	g.Out <- 0
 }
 
+// Stop the gate from doing it's job
 func (g *ANDGate) Stop() {
 	close(g.Pin1)
 	close(g.Pin2)
