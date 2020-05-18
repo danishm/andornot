@@ -27,6 +27,18 @@ func (b *board) run(g Gate) {
 	}()
 }
 
+// Connect connects output from one pin to multiple input pins
+func (b *board) Connect(from chan int, to ...chan int) {
+	go func() {
+		for b.running {
+			val := <-from
+			for _, pin := range to {
+				pin <- val
+			}
+		}
+	}()
+}
+
 func (b *board) Stop() {
 	b.running = false
 	for _, gate := range b.gates {
