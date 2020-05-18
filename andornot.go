@@ -2,27 +2,17 @@ package main
 
 import (
 	"fmt"
-	"time"
+
+	"github.com/danishm/andornot/gates"
 )
 
-func Do(ch chan int) {
-	ch <- 1
-	fmt.Println("Done 1")
-	ch <- 3
-	fmt.Println("Done 3")
-}
-
 func main() {
-	ch := make(chan int)
+	board := gates.Board()
+	gate := board.AND()
 
-	go Do(ch)
+	gate.Pin1 <- 0
+	gate.Pin2 <- 1
+	out := <-gate.Out
 
-	time.Sleep(time.Second)
-	fmt.Println(<-ch)
-
-	time.Sleep(time.Second)
-	fmt.Println(<-ch)
-
-	time.Sleep(time.Second)
-	fmt.Println("Done")
+	fmt.Println(out)
 }
