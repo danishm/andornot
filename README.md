@@ -21,13 +21,15 @@ import (
 
 func main() {
 	board := gates.Board()
-	gate := board.AND()
-
-	gate.Pin1 <- 0
+    
+    gate := board.AND()
+    gate.Pin1 <- 0
 	gate.Pin2 <- 1
 	out := <-gate.Out
 
-	fmt.Println(out)
+    fmt.Println(out)
+    
+    board.Stop()
 }
 ```
 
