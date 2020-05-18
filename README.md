@@ -5,10 +5,12 @@ I've been using **Go** as my primary development language for over 2 years now. 
 
 This is my attempt!
 
-Example
+Examples
 -------
 
-### Code
+### Trying a simple AND gate
+
+#### Code
 
 ```go
 package main
@@ -33,7 +35,44 @@ func main() {
 }
 ```
 
-### Output
+#### Output
+
+```
+0
+```
+
+### Construct a NAND gate using AND and NOT
+
+#### Code
+```go
+package main
+
+import (
+	"fmt"
+
+	"github.com/danishm/andornot/gates"
+)
+
+func main() {
+	board := gates.Board()
+
+	// Create a NAND gate
+	and := board.AND()
+	not := board.NOT()
+	board.Connect(and.Out, not.Pin1)
+
+	// See if it works
+	and.Pin1 <- 1
+	and.Pin2 <- 1
+	out := <-not.Out
+
+	fmt.Println(out)
+
+	board.Stop()
+}
+```
+
+#### Output
 
 ```
 0
