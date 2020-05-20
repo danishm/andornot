@@ -10,14 +10,12 @@ func main() {
 	board := gates.DefaultBoard()
 
 	// Create a NAND gate
-	and := gates.AND(board)
-	not := gates.NOT(board)
-	board.Connect(and.Out(), not.Pin1())
+	gate := gates.NAND(board)
 
 	// See if it works
-	and.Pin1() <- 1
-	and.Pin2() <- 0
-	out := <-not.Out()
+	gate.Pin1() <- 1
+	gate.Pin2() <- 1
+	out := <-gate.Out()
 
 	fmt.Println(out)
 
