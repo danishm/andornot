@@ -9,6 +9,16 @@ import (
 type Gate interface {
 	Compute()
 	Stop()
+	Pin1() chan int
+	Pin2() chan int
+	Out() chan int
+}
+
+type Board interface {
+	Stop()
+	Run(Gate)
+	AddGate(Gate)
+	Connect(from chan int, to ...chan int)
 }
 
 type board struct {
@@ -18,7 +28,7 @@ type board struct {
 }
 
 // Run gets the gate running
-func (b *board) run(g Gate) {
+func (b *board) Run(g Gate) {
 	go func() {
 		for b.running {
 			g.Compute()
@@ -46,38 +56,15 @@ func (b *board) Stop() {
 	}
 }
 
-func (b *board) addGate(g Gate) {
+func (b *board) AddGate(g Gate) {
 	b.mu.Lock()
 	b.gates = append(b.gates, g)
 	b.mu.Unlock()
 }
 
-// AND creates and AND gate
-func (b *board) AND() ANDGate {
-	gate := ANDGate{
-		Pin1: make(chan int),
-		Pin2: make(chan int),
-		Out:  make(chan int),
-	}
-	b.run(&gate)
-	b.addGate(&gate)
-	return gate
-}
-
-// NOT creates and NOT gate
-func (b *board) NOT() NOTGate {
-	gate := NOTGate{
-		Pin1: make(chan int),
-		Out:  make(chan int),
-	}
-	b.run(&gate)
-	b.addGate(&gate)
-	return gate
-}
-
-// Board creates a new circuit board to work with
-func Board() board {
-	return board{
+// DefaultBoard creates a new circuit board to work with
+func DefaultBoard() Board {
+	return &board{
 		running: true,
 	}
 }

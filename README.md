@@ -22,16 +22,16 @@ import (
 )
 
 func main() {
-    board := gates.Board()
+	board := gates.DefaultBoard()
 
-    gate := board.AND()
-    gate.Pin1 <- 0
-    gate.Pin2 <- 1
-    out := <-gate.Out
+	gate := gates.AND(board)
+	gate.Pin1() <- 0
+	gate.Pin2() <- 1
+	out := <-gate.Out()
 
-    fmt.Println(out)
+	fmt.Println(out)
 
-    board.Stop()
+	board.Stop()
 }
 ```
 
@@ -54,17 +54,17 @@ import (
 )
 
 func main() {
-	board := gates.Board()
+	board := gates.DefaultBoard()
 
 	// Create a NAND gate
-	and := board.AND()
-	not := board.NOT()
-	board.Connect(and.Out, not.Pin1)
+	and := gates.AND(board)
+	not := gates.NOT(board)
+	board.Connect(and.Out(), not.Pin1())
 
 	// See if it works
-	and.Pin1 <- 1
-	and.Pin2 <- 1
-	out := <-not.Out
+	and.Pin1() <- 1
+	and.Pin2() <- 0
+	out := <-not.Out()
 
 	fmt.Println(out)
 

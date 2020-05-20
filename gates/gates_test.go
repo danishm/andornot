@@ -6,8 +6,8 @@ import (
 
 // TestAND tests the AND gate
 func TestAND(t *testing.T) {
-	board := Board()
-	gate := board.AND()
+	board := DefaultBoard()
+	gate := AND(board)
 
 	cases := []struct {
 		p1       int
@@ -21,9 +21,9 @@ func TestAND(t *testing.T) {
 	}
 
 	for _, c := range cases {
-		gate.Pin1 <- c.p1
-		gate.Pin2 <- c.p2
-		actual := <-gate.Out
+		gate.Pin1() <- c.p1
+		gate.Pin2() <- c.p2
+		actual := <-gate.Out()
 		if actual != c.expected {
 			t.Logf("%d AND %d -> %d But Expected %d", c.p1, c.p2, actual, c.expected)
 			t.Fail()
@@ -34,8 +34,8 @@ func TestAND(t *testing.T) {
 }
 
 func TestNOT(t *testing.T) {
-	board := Board()
-	gate := board.NOT()
+	board := DefaultBoard()
+	gate := NOT(board)
 
 	cases := []struct {
 		p1       int
@@ -46,8 +46,8 @@ func TestNOT(t *testing.T) {
 	}
 
 	for _, c := range cases {
-		gate.Pin1 <- c.p1
-		actual := <-gate.Out
+		gate.Pin1() <- c.p1
+		actual := <-gate.Out()
 		if actual != c.expected {
 			t.Logf("NOT %d -> %d But Expected %d", c.p1, actual, c.expected)
 			t.Fail()
