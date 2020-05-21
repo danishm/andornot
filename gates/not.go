@@ -30,11 +30,13 @@ func NOT(board Board) Gate {
 
 // Compute calculates the value
 func (g *notGate) Compute() {
-	x := <-g.pin1
-	if x < 1 {
-		g.out <- 1
-	} else {
-		g.out <- 0
+	x, ok := <-g.pin1
+	if ok {
+		if x < 1 {
+			g.out <- 1
+		} else {
+			g.out <- 0
+		}
 	}
 }
 

@@ -33,11 +33,14 @@ func (g *andGate) Out() chan int {
 
 // Compute calculates the value
 func (g *andGate) Compute() {
-	x, y := <-g.pin1, <-g.pin2
-	if x >= 1 && y >= 1 {
-		g.out <- 1
-	} else {
-		g.out <- 0
+	x, ok1 := <-g.pin1
+	y, ok2 := <-g.pin2
+	if ok1 && ok2 {
+		if x >= 1 && y >= 1 {
+			g.out <- 1
+		} else {
+			g.out <- 0
+		}
 	}
 }
 
