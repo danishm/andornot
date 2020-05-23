@@ -29,7 +29,7 @@ func NAND(board Board) Gate {
 		board: internalBoard,
 	}
 	// we simply add the gate without runing it on the parent board
-	board.AddGate(&gate)
+	board.AddComponent(&gate)
 	return &gate
 }
 
@@ -45,9 +45,9 @@ func (g *nandGate) Out() chan int {
 	return g.not.Out()
 }
 
-// Compute does nothing since the base gates connected together
+// Run does nothing since the base gates connected together
 // do all the work
-func (g *nandGate) Compute() {}
+func (g *nandGate) Run() {}
 
 // Stop the gate from doing it's job
 func (g *nandGate) Stop() {

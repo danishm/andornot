@@ -50,7 +50,7 @@ func XOR(board Board) Gate {
 		and:   and,
 		board: internalBoard,
 	}
-	board.AddGate(&gate)
+	board.AddComponent(&gate)
 	return &gate
 }
 
@@ -66,9 +66,9 @@ func (g *xorMixedGate) Out() chan int {
 	return g.and.Out()
 }
 
-// Compute does nothing since the base gates connected together
+// Run does nothing since the base gates connected together
 // do all the work
-func (g *xorMixedGate) Compute() {}
+func (g *xorMixedGate) Run() {}
 
 // Stop the gate from doing it's job
 func (g *xorMixedGate) Stop() {

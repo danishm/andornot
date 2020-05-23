@@ -15,7 +15,7 @@ func AND(board Board) Gate {
 		out:  make(chan int),
 	}
 	board.Run(&gate)
-	board.AddGate(&gate)
+	board.AddComponent(&gate)
 	return &gate
 }
 
@@ -31,8 +31,8 @@ func (g *andGate) Out() chan int {
 	return g.out
 }
 
-// Compute calculates the value
-func (g *andGate) Compute() {
+// Run calculates the value
+func (g *andGate) Run() {
 	x, ok1 := <-g.pin1
 	y, ok2 := <-g.pin2
 	if ok1 && ok2 {

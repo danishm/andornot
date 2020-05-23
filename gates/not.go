@@ -24,12 +24,12 @@ func NOT(board Board) Gate {
 		out:  make(chan int),
 	}
 	board.Run(&gate)
-	board.AddGate(&gate)
+	board.AddComponent(&gate)
 	return &gate
 }
 
-// Compute calculates the value
-func (g *notGate) Compute() {
+// Run calculates the value
+func (g *notGate) Run() {
 	x, ok := <-g.pin1
 	if ok {
 		if x < 1 {

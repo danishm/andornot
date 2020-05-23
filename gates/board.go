@@ -3,6 +3,8 @@ package gates
 import (
 	"fmt"
 	"sync"
+
+	"github.com/danishm/andornot/core"
 )
 
 // Board defines the interface for a board on which a circuit
@@ -11,22 +13,22 @@ import (
 // stopping them
 type Board interface {
 	Stop()
-	Run(Gate)
-	AddGate(Gate)
+	Run(core.Component)
+	AddComponent(core.Component)
 	Connect(from chan int, to ...chan int)
 }
 
 type board struct {
-	running bool
-	mu      sync.Mutex
-	gates   []Gate
+	running    bool
+	mu         sync.Mutex
+	components []core.Component
 }
 
 // Run gets the gate running
-func (b *board) Run(g Gate) {
+func (b *board) Run(c core.Component) {
 	go func() {
 		for b.running {
-			g.Compute()
+			c.Run()
 		}
 		fmt.Println("Board stopped")
 	}()
@@ -49,14 +51,14 @@ func (b *board) Connect(from chan int, to ...chan int) {
 func (b *board) Stop() {
 	fmt.Println("Board stop initiated...")
 	b.running = false
-	for _, gate := range b.gates {
-		gate.Stop()
+	for _, component := range b.components {
+		component.Stop()
 	}
 }
 
-func (b *board) AddGate(g Gate) {
+func (b *board) AddComponent(c core.Component) {
 	b.mu.Lock()
-	b.gates = append(b.gates, g)
+	b.components = append(b.components, c)
 	b.mu.Unlock()
 }
 

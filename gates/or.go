@@ -14,7 +14,7 @@ func OR(board Board) Gate {
 		out:  make(chan int),
 	}
 	board.Run(&gate)
-	board.AddGate(&gate)
+	board.AddComponent(&gate)
 	return &gate
 }
 
@@ -30,8 +30,8 @@ func (g *orGate) Out() chan int {
 	return g.out
 }
 
-// Compute calculates the value
-func (g *orGate) Compute() {
+// Run calculates the value
+func (g *orGate) Run() {
 	x, ok1 := <-g.pin1
 	y, ok2 := <-g.pin2
 	if ok1 && ok2 {
