@@ -18,6 +18,7 @@ func main() {
 	out := <-gate.Out()
 
 	fmt.Println(out)
+	fmt.Println("Gate count:", board.CoreGatesCount())
 
 	board.Stop()
 }

@@ -23,7 +23,7 @@ func NOT(board Board) Gate {
 		pin1: make(chan int),
 		out:  make(chan int),
 	}
-	board.Run(&gate)
+	board.RunComponent(&gate)
 	board.AddComponent(&gate)
 	return &gate
 }
@@ -43,4 +43,8 @@ func (g *notGate) Run() {
 func (g *notGate) Stop() {
 	close(g.pin1)
 	close(g.out)
+}
+
+func (g *notGate) CoreGatesCount() int {
+	return 1
 }

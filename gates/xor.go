@@ -74,3 +74,7 @@ func (g *xorMixedGate) Run() {}
 func (g *xorMixedGate) Stop() {
 	g.board.Stop()
 }
+
+func (g *xorMixedGate) CoreGatesCount() int {
+	return g.board.CoreGatesCount()
+}

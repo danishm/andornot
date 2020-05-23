@@ -38,5 +38,11 @@ func TestXOR(t *testing.T) {
 		}
 	}
 
+	gatesCount := adder.CoreGatesCount()
+	if gatesCount != 11 {
+		t.Logf("Expected gate count to be %d got %d", 11, gatesCount)
+		t.Fail()
+	}
+
 	adder.Stop()
 }

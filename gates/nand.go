@@ -53,3 +53,7 @@ func (g *nandGate) Run() {}
 func (g *nandGate) Stop() {
 	g.board.Stop()
 }
+
+func (g *nandGate) CoreGatesCount() int {
+	return g.board.CoreGatesCount()
+}

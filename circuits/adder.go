@@ -1,11 +1,13 @@
 package circuits
 
 import (
+	"github.com/danishm/andornot/core"
 	"github.com/danishm/andornot/gates"
 )
 
 // FullAdder represents an interface exposed by a full binary adder
 type FullAdder interface {
+	core.Component
 
 	// Inputs
 	A() chan int
@@ -15,8 +17,6 @@ type FullAdder interface {
 	// Outputs
 	S() chan int
 	COut() chan int
-
-	Stop()
 }
 
 type fullAdder struct {
@@ -92,6 +92,12 @@ func (fa *fullAdder) COut() chan int {
 	return fa.or.Out()
 }
 
+func (fa *fullAdder) Run() {}
+
 func (fa *fullAdder) Stop() {
 	fa.board.Stop()
+}
+
+func (fa *fullAdder) CoreGatesCount() int {
+	return fa.board.CoreGatesCount()
 }

@@ -12,8 +12,9 @@ import (
 // keep track of all the gates running and be able to centralize
 // stopping them
 type Board interface {
-	Stop()
-	Run(core.Component)
+	core.Stoppable
+	core.Countable
+	RunComponent(core.Component)
 	AddComponent(core.Component)
 	Connect(from chan int, to ...chan int)
 }
@@ -25,7 +26,7 @@ type board struct {
 }
 
 // Run gets the gate running
-func (b *board) Run(c core.Component) {
+func (b *board) RunComponent(c core.Component) {
 	go func() {
 		for b.running {
 			c.Run()
@@ -67,4 +68,12 @@ func DefaultBoard() Board {
 	return &board{
 		running: true,
 	}
+}
+
+func (b *board) CoreGatesCount() int {
+	total := 0
+	for _, c := range b.components {
+		total += c.CoreGatesCount()
+	}
+	return total
 }

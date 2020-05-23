@@ -13,7 +13,7 @@ func OR(board Board) Gate {
 		pin2: make(chan int),
 		out:  make(chan int),
 	}
-	board.Run(&gate)
+	board.RunComponent(&gate)
 	board.AddComponent(&gate)
 	return &gate
 }
@@ -48,4 +48,8 @@ func (g *orGate) Stop() {
 	close(g.pin1)
 	close(g.pin2)
 	close(g.out)
+}
+
+func (g *orGate) CoreGatesCount() int {
+	return 1
 }
