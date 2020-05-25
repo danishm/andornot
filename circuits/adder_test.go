@@ -2,11 +2,14 @@ package circuits
 
 import (
 	"testing"
+
+	"github.com/danishm/andornot/gates"
 )
 
 // TestXOR tests the XOR gate
 func TestXOR(t *testing.T) {
-	adder := DefaultFullAdder()
+	board := gates.DefaultBoard()
+	adder := DefaultFullAdder(board)
 
 	// This is basically the full truth table of the adder
 	cases := []struct {
@@ -38,9 +41,10 @@ func TestXOR(t *testing.T) {
 		}
 	}
 
-	gatesCount := adder.CoreGatesCount()
-	if gatesCount != 11 {
-		t.Logf("Expected gate count to be %d got %d", 11, gatesCount)
+	gatesCount := board.CoreGatesCount()
+	expected := 11
+	if gatesCount != expected {
+		t.Logf("Expected gate count to be %d got %d", expected, gatesCount)
 		t.Fail()
 	}
 

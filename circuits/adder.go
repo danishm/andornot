@@ -34,7 +34,7 @@ type fullAdder struct {
 }
 
 // DefaultFullAdder creates and returns a full binary adder
-func DefaultFullAdder() FullAdder {
+func DefaultFullAdder(board gates.Board) FullAdder {
 
 	a := make(chan int)
 	b := make(chan int)
@@ -69,6 +69,7 @@ func DefaultFullAdder() FullAdder {
 		board: ib,
 	}
 
+	board.AddComponent(&adder)
 	return &adder
 }
 
