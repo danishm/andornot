@@ -3,6 +3,7 @@ package circuits
 import (
 	"github.com/danishm/andornot/core"
 	"github.com/danishm/andornot/gates"
+	"github.com/danishm/andornot/identity"
 )
 
 // FullAdder represents an interface exposed by a full binary adder
@@ -20,6 +21,8 @@ type FullAdder interface {
 }
 
 type fullAdder struct {
+	id string
+
 	a   chan int
 	b   chan int
 	cin chan int
@@ -58,6 +61,7 @@ func DefaultFullAdder(board gates.Board) FullAdder {
 	ib.Connect(and2.Out(), or.Pin2())
 
 	adder := fullAdder{
+		id:    identity.Get("adder"),
 		a:     a,
 		b:     b,
 		cin:   cin,
@@ -71,6 +75,10 @@ func DefaultFullAdder(board gates.Board) FullAdder {
 
 	board.AddComponent(&adder)
 	return &adder
+}
+
+func (fa *fullAdder) ID() string {
+	return fa.id
 }
 
 func (fa *fullAdder) A() chan int {

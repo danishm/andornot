@@ -23,4 +23,5 @@ type Component interface {
 	Runnable
 	Stoppable
 	Countable
+	ID() string
 }

@@ -1,7 +1,10 @@
 package gates
 
+import "github.com/danishm/andornot/identity"
+
 // ANDGate represents and AND Gate
 type andGate struct {
+	id   string
 	pin1 chan int
 	pin2 chan int
 	out  chan int
@@ -10,6 +13,7 @@ type andGate struct {
 // AND creates a new AND gate
 func AND(board Board) Gate {
 	gate := andGate{
+		id:   identity.Get("and"),
 		pin1: make(chan int),
 		pin2: make(chan int),
 		out:  make(chan int),
@@ -17,6 +21,10 @@ func AND(board Board) Gate {
 	board.RunComponent(&gate)
 	board.AddComponent(&gate)
 	return &gate
+}
+
+func (g *andGate) ID() string {
+	return g.id
 }
 
 func (g *andGate) Pin1() chan int {

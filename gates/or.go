@@ -1,6 +1,11 @@
 package gates
 
+import (
+	"github.com/danishm/andornot/identity"
+)
+
 type orGate struct {
+	id   string
 	pin1 chan int
 	pin2 chan int
 	out  chan int
@@ -9,6 +14,7 @@ type orGate struct {
 // OR creates a new OR gate
 func OR(board Board) Gate {
 	gate := orGate{
+		id:   identity.Get("or"),
 		pin1: make(chan int),
 		pin2: make(chan int),
 		out:  make(chan int),
@@ -16,6 +22,10 @@ func OR(board Board) Gate {
 	board.RunComponent(&gate)
 	board.AddComponent(&gate)
 	return &gate
+}
+
+func (g *orGate) ID() string {
+	return g.id
 }
 
 func (g *orGate) Pin1() chan int {

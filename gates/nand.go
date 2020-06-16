@@ -8,9 +8,14 @@ package gates
 //    Pin2–––––|&&
 //
 type nandGate struct {
+	id    string
 	and   Gate
 	not   Gate
 	board Board
+}
+
+func (g *nandGate) ID() string {
+	return g.id
 }
 
 // NAND creates a new NAND gate, which internall uses an AND and a

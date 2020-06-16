@@ -1,5 +1,7 @@
 package gates
 
+import "github.com/danishm/andornot/identity"
+
 // This gates intenrally uses a mixed gates implementation of
 // a XOR gate on an internal board
 //
@@ -13,6 +15,7 @@ package gates
 //
 // Reference: https://en.wikipedia.org/wiki/XOR_gate
 type xorMixedGate struct {
+	id    string
 	pin1  chan int
 	pin2  chan int
 	nand  Gate
@@ -43,6 +46,7 @@ func XOR(board Board) Gate {
 
 	// Creating and adding to the parent board
 	gate := xorMixedGate{
+		id:    identity.Get("xor"),
 		pin1:  pin1,
 		pin2:  pin2,
 		nand:  nand,
@@ -52,6 +56,10 @@ func XOR(board Board) Gate {
 	}
 	board.AddComponent(&gate)
 	return &gate
+}
+
+func (g *xorMixedGate) ID() string {
+	return g.id
 }
 
 func (g *xorMixedGate) Pin1() chan int {

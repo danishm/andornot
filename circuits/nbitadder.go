@@ -1,8 +1,11 @@
 package circuits
 
 import (
+	"fmt"
+
 	"github.com/danishm/andornot/core"
 	"github.com/danishm/andornot/gates"
+	"github.com/danishm/andornot/identity"
 )
 
 // NBitAdder defines the internface needed for an N-Bit adder
@@ -20,6 +23,8 @@ type NBitAdder interface {
 }
 
 type nBitAdder struct {
+	id string
+
 	adders []FullAdder
 
 	board gates.Board
@@ -42,11 +47,16 @@ func DefaultNBitAdder(board gates.Board, bits int) NBitAdder {
 	}
 
 	nba := nBitAdder{
+		id:     identity.Get(fmt.Sprintf("%dbitadder", bits)),
 		adders: adders,
 		board:  ib,
 	}
 	board.AddComponent(&nba)
 	return &nba
+}
+
+func (nba *nBitAdder) ID() string {
+	return nba.id
 }
 
 func (nba *nBitAdder) A(i int) chan int {

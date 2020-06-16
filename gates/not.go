@@ -1,8 +1,15 @@
 package gates
 
+import "github.com/danishm/andornot/identity"
+
 type notGate struct {
+	id   string
 	pin1 chan int
 	out  chan int
+}
+
+func (g *notGate) ID() string {
+	return g.id
 }
 
 func (g *notGate) Pin1() chan int {
@@ -20,6 +27,7 @@ func (g *notGate) Out() chan int {
 // NOT returns a NOT gate
 func NOT(board Board) Gate {
 	gate := notGate{
+		id:   identity.Get("not"),
 		pin1: make(chan int),
 		out:  make(chan int),
 	}
